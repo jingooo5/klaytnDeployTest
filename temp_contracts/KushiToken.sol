@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity ^0.5.6;
+pragma solidity ^0.7.0;
 
 import "./Ownable.sol";
 import "./KIP7.sol";
@@ -16,12 +16,6 @@ contract KushiToken is KIP7("KushiToken", "KUSHI", 18), Ownable {
         _mint(_to, _amount);
         _moveDelegates(address(0), _delegates[_to], _amount);
     }
-
-    // Copied and modified from YAM code:
-    // https://github.com/yam-finance/yam-protocol/blob/master/contracts/token/YAMGovernanceStorage.sol
-    // https://github.com/yam-finance/yam-protocol/blob/master/contracts/token/YAMGovernance.sol
-    // Which is copied and modified from COMPOUND:
-    // https://github.com/compound-finance/compound-protocol/blob/master/contracts/Governance/Comp.sol
 
     /// @notice A record of each accounts delegate
     mapping (address => address) internal _delegates;

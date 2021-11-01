@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 // OpenZeppelin Contracts v4.3.2 (access/Ownable.sol)
 
-pragma solidity ^0.5.6;
+pragma solidity ^0.7.0;
 
 /**
  * @dev Contract module which provides a basic access control mechanism, where
@@ -23,7 +23,7 @@ contract Ownable {
     /**
      * @dev Initializes the contract setting the deployer as the initial owner.
      */
-    constructor() internal {
+    constructor() {
         _transferOwnership(msg.sender);
     }
 

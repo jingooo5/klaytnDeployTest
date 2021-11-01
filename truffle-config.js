@@ -21,9 +21,12 @@
  const Caver = require('caver-js');
  const fs = require('fs');
 
-const privateKey = "0x8604bcd62545f704ab553692a5e8b9f53af5246bd1b6fe6507e36768a5013283";
+const privateKey = fs.readFileSync("./.secret").toString();
 const access_key_id = JSON.parse(fs.readFileSync("./kas-access-keys.json")).accessKeyId;
 const secret_access_key = JSON.parse(fs.readFileSync("./kas-access-keys.json")).secretAccessKey;
+
+
+console.log(privateKey);
 // const HDWalletProvider = require('@truffle/hdwallet-provider');
 // const infuraKey = "fj4jll3k.....";
 //
@@ -40,7 +43,14 @@ module.exports = {
    *
    * $ truffle test --network <network-name>
    */
-
+   compilers: {
+    solc: {
+      version: "0.7.0",
+      settings: {
+        evmVersion: "constantinople"
+      },
+    }
+  },
   networks: {
     // Useful for testing. The `development` name is special - truffle uses it by default
     // if it's defined here and no other network is specified at the command line.
@@ -110,19 +120,4 @@ module.exports = {
   mocha: {
     // timeout: 100000
   },
-
-  // Configure your compilers
-  compilers: {
-    solc: {
-      version: "0.5.6",    // Fetch exact version from solc-bin (default: truffle's version)
-      // docker: true,        // Use "0.5.1" you've installed locally with docker (default: false)
-      // settings: {          // See the solidity docs for advice about optimization and evmVersion
-      //  optimizer: {
-      //    enabled: false,
-      //    runs: 200
-      //  },
-      evmVersion: "constantinople"
-      // }
-    }
-  }
 }
