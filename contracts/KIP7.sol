@@ -1,4 +1,4 @@
-pragma solidity ^0.7.0;
+pragma solidity ^0.5.6;
 
 import "./interfaces/IKIP7.sol";
 import "./libraries/SafeMath.sol";
