@@ -17,12 +17,12 @@ contract MasterChef is IMasterChef, onlyOwner{
         uint256 allocPoint;
         uint256 lastRewardBlock;
         uint256 accSushiPerShare;
+        IRewarder rewarder;
     }
 
     KushiToken public kushi;
 
     mapping(address => PoolInfo) poolInfo;
-    mapping()
     
     //PoolInfo[] public poolInfo;
     //IKIP7[] public lpToken;
