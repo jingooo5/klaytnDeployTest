@@ -1,10 +1,16 @@
-pragma solidity ^0.7.0;
+pragma solidity ^0.5.6;
 
 import "./interfaces/IKIP7.sol";
 import "./libraries/SafeMath.sol";
 
-contract KIP7 is IKIP7{
+contract KIP7{
     using SafeMath for uint256;
+
+    event Transfer(address indexed from, address indexed to, uint256 value);
+
+    /// @dev Emitted when the allowance of a `spender` for an `owner` is set by
+    /// a call to {approve}. `value` is the new allowance.
+    event Approval(address indexed owner, address indexed spender, uint256 value);
 
     string private _name;
     string private _symbol;

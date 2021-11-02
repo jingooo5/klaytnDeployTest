@@ -1,4 +1,148 @@
 {
   "_format": "hh-sol-cache-2",
-  "files": {}
+  "files": {
+    "/Users/user/Documents/GitHub/klaytnDeployTest/contracts/interfaces/IKIP7.sol": {
+      "lastModificationDate": 1635845924099,
+      "contentHash": "2bd66966fd7405f5933bf1ee829b3a6b",
+      "sourceName": "contracts/interfaces/IKIP7.sol",
+      "solcConfig": {
+        "version": "0.5.6",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.5.6"
+      ],
+      "artifacts": [
+        "IKIP7"
+      ]
+    },
+    "/Users/user/Documents/GitHub/klaytnDeployTest/contracts/KIP7.sol": {
+      "lastModificationDate": 1635847334415,
+      "contentHash": "e8bf21f1c63112f18991204ee4d7a0e8",
+      "sourceName": "contracts/KIP7.sol",
+      "solcConfig": {
+        "version": "0.5.6",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./interfaces/IKIP7.sol",
+        "./libraries/SafeMath.sol"
+      ],
+      "versionPragmas": [
+        "^0.5.6"
+      ],
+      "artifacts": [
+        "KIP7"
+      ]
+    },
+    "/Users/user/Documents/GitHub/klaytnDeployTest/contracts/libraries/SafeMath.sol": {
+      "lastModificationDate": 1635846021816,
+      "contentHash": "9461d6d894baabf17829df218f8b5989",
+      "sourceName": "contracts/libraries/SafeMath.sol",
+      "solcConfig": {
+        "version": "0.5.6",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.5.6"
+      ],
+      "artifacts": [
+        "SafeMath",
+        "SafeMath128"
+      ]
+    },
+    "/Users/user/Documents/GitHub/klaytnDeployTest/contracts/Testoken.sol": {
+      "lastModificationDate": 1635821001973,
+      "contentHash": "1dfdebd2e5f63d9e747d80989d094f5f",
+      "sourceName": "contracts/Testoken.sol",
+      "solcConfig": {
+        "version": "0.5.6",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./libraries/SafeMath.sol",
+        "./KIP7.sol"
+      ],
+      "versionPragmas": [
+        "^0.5.6"
+      ],
+      "artifacts": [
+        "Testoken"
+      ]
+    }
+  }
 }
