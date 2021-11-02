@@ -41,7 +41,7 @@ contract KIP7 is IKIP7{
         return balances[account];
     }
 
-    function allownace(address owner, address spender) public view returns(uint256){
+    function allowance(address owner, address spender) public view returns(uint256){
         return allowances[owner][spender];
     }
 
@@ -55,7 +55,7 @@ contract KIP7 is IKIP7{
         return true;
     }
 
-    function trasferFrom(address sender, address recipient, uint256 amount) external returns(bool){
+    function transferFrom(address sender, address recipient, uint256 amount) external returns(bool){
         _transfer(sender, recipient, amount);
 
         uint256 _allownace = allowances[sender][msg.sender];
@@ -89,8 +89,8 @@ contract KIP7 is IKIP7{
     function _mint(address to, uint256 amount) internal {
         require(to != address(0));
 
-        _totalSupply.add(amount);
-        balances[to].add(amount);
+        _totalSupply = _totalSupply.add(amount);
+        balances[to] = balances[to].add(amount);
         
         emit Transfer(address(0), to, amount);
     }

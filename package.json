@@ -20,6 +20,10 @@
     "fs": "0.0.1-security"
   },
   "devDependencies": {
-    "truffle-hdwallet-provider-klaytn": "^1.4.1"
+    "@openzeppelin/test-helpers": "^0.5.15",
+    "bn.js": "^5.2.0",
+    "chai": "^4.3.4",
+    "truffle-hdwallet-provider-klaytn": "^1.4.1",
+    "web3": "^1.6.0"
   }
 }

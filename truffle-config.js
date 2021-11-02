@@ -18,15 +18,14 @@
  *
  */
  const HDWalletProvider = require("truffle-hdwallet-provider-klaytn");
- const Caver = require('caver-js');
  const fs = require('fs');
+ const path = require("path");
+ const Caver = require('caver-js')
 
 const privateKey = fs.readFileSync("./.secret").toString();
-const access_key_id = JSON.parse(fs.readFileSync("./kas-access-keys.json")).accessKeyId;
-const secret_access_key = JSON.parse(fs.readFileSync("./kas-access-keys.json")).secretAccessKey;
+const accessKeyId = JSON.parse(fs.readFileSync("./kas-access-keys.json")).accessKeyId;
+const secretAccessKey = JSON.parse(fs.readFileSync("./kas-access-keys.json")).secretAccessKey;
 
-
-console.log(privateKey);
 // const HDWalletProvider = require('@truffle/hdwallet-provider');
 // const infuraKey = "fj4jll3k.....";
 //
@@ -59,9 +58,11 @@ module.exports = {
     // options below to some value.
     //
     development: {
-     host: "localhost",     // Localhost (default: none)
-     port: 8551,            // Standard Ethereum port (default: none)
-     network_id: "*",       // Any network (default: none)
+      host: "127.0.0.1",     // Localhost (default: none)
+      port: 8545,            // Standard Ethereum port (default: none)
+      network_id: "*",       // Any network (default: none)
+      gas: 0x6691b7,
+      gasPrice:20000000000
     },
 
     // Another network with more advanced options...
@@ -84,36 +85,21 @@ module.exports = {
       // timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
       // skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
     // },
-
-    kasbaobab: {
+    kasBaobab: {
       provider: () => {
         const option = {
           headers: [
-            {
-              name: "Authorization",
-              value:
-                "Basic " +
-                Buffer.from(access_key_id + ":" + secret_access_key).toString(
-                  "base64"
-                ),
-            },
-            { name: "x-chain-id", value: "1001" },
+            { name: 'Authorization', value: 'Basic ' + Buffer.from(accessKeyId + ':' + secretAccessKey).toString('base64') },
+            { name: 'x-chain-id', value: '1001' }
           ],
           keepAlive: false,
-        };
-
-        return new HDWalletProvider(
-          privateKey,
-          new Caver.providers.HttpProvider(
-            "https://node-api.klaytnapi.com/v1/klaytn",
-            option
-          )
-        );
+        }
+        return new HDWalletProvider(privateKey, new Caver.providers.HttpProvider("https://node-api.klaytnapi.com/v1/klaytn", option))
       },
-      network_id: 1001,   // This network is yours, in the cloud.
-      gas: 8500000,
-      gasPrice: 25000000000,
-    }
+      network_id: '1001', //Klaytn baobab testnet's network id
+      gas: '8500000',
+      gasPrice:'25000000000'
+    },
   },
 
   // Set default mocha options here, use special reporters etc.
