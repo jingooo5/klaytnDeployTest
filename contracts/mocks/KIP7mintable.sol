@@ -1,9 +1,9 @@
 pragma solidity ^0.5.6;
 
-import "./interfaces/IKIP7.sol";
-import "./libraries/SafeMath.sol";
+import "../interfaces/IKIP7.sol";
+import "../libraries/SafeMath.sol";
 
-contract KIP7 is IKIP7{
+contract KIP7mintable is IKIP7{
     using SafeMath for uint256;
 
     string private _name;
@@ -59,7 +59,7 @@ contract KIP7 is IKIP7{
         _transfer(sender, recipient, amount);
 
         uint256 _allownace = allowances[sender][msg.sender];
-        require(_allownace >= amount, "KIP7: not enough allowance");
+        require(_allownace >= amount);
         _approve(sender, msg.sender, _allownace - amount);
 
         return true;
@@ -85,6 +85,11 @@ contract KIP7 is IKIP7{
 
         emit Transfer(from, to, amount);
     }
+
+    function mint(address _to, uint256 _amount) public {
+        _mint(_to, _amount);
+    }
+    
 
     function _mint(address to, uint256 amount) internal {
         require(to != address(0));

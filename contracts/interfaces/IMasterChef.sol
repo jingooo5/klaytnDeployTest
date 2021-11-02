@@ -9,7 +9,7 @@ interface IMasterChef{
         //lptoken amount
         uint256 amount;
         //received reward
-        uint256 rewardDebt;
+        int256 rewardDebt;
     }
 
     struct PoolInfo{
@@ -29,8 +29,8 @@ interface IMasterChef{
     event LogUpdatePool(address indexed lp, uint256 lastRewardBlock, uint256 lpSupply, uint256 accKushiPerShare);
 
     function add(uint256 _allocPoint, address _lpToken, IRewarder _rewarder) external;
-    function set(uint256 _lp, uint256 _allocPoint, IRewarder _rewarder, bool overwrite) external;
-    function pendingTokne(address _lp, address _user) external view returns(uint256);
+    function set(address _lp, uint256 _allocPoint, IRewarder _rewarder, bool overwrite) external;
+    function pendingToken(address _lp, address _user) external view returns(uint256);
     function deposit(address _lp, uint256 _amount, address to) external;
     function withdraw(address _lp, uint256 _amount, address to) external;
     function harvest(address _lp, address to) external;

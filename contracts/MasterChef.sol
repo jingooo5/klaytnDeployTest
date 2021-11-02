@@ -6,17 +6,19 @@ import "./Ownable.sol";
 import "./libraries/SafeMath.sol";
 import "./libraries/SafeERC20.sol";
 import "./KushiToken.sol";
+import "./libraries/SignedSafeMath.sol";
 
 contract MasterChef is IMasterChef, Ownable{
     using SafeMath for uint256;
     using SafeERC20 for IKIP7;
+    using SignedSafeMath for int256;
 
     KushiToken public kushi;
 
     //lpToken => poolInfo
-    mapping(address => PoolInfo) poolInfo;
+    mapping(address => PoolInfo) public poolInfo;
     //lpToken => useraddress => info
-    mapping(address => mapping(address => UserInfo)) userInfo;
+    mapping(address => mapping(address => UserInfo)) public userInfo;
 
     uint256 private constant ACC_SUSHI_PRECISION = 1e12;
     
@@ -30,7 +32,7 @@ contract MasterChef is IMasterChef, Ownable{
     uint256 public kushiPerBlock;
     uint256 public startBlock;
 
-    constructor(address _KushiToken, uint256 _kushiPerBlock, uint256 _startBlock) public {
+    constructor(address _KushiToken, uint256 _kushiPerBlock, uint256 _startBlock) public Ownable() {
         startBlock = _startBlock;
         kushiPerBlock = _kushiPerBlock;
         kushi = KushiToken(_KushiToken);
@@ -75,7 +77,7 @@ contract MasterChef is IMasterChef, Ownable{
             uint256 kushiReward = blocks.mul(kushiPerBlock).mul(pool.allocPoint) / totalAllocPoint;
             accSushiPerShare = accSushiPerShare.add(kushiReward.mul(ACC_SUSHI_PRECISION) / lpSupply);
         }
-        pending = (user.amount.mul(accSushiPerShare) / ACC_SUSHI_PRECISION).sub(user.rewardDebt);
+        pending = int256(user.amount.mul(accSushiPerShare) / ACC_SUSHI_PRECISION).sub(user.rewardDebt).toUInt256();
     }
 
     function _updatePool(address _lp) internal returns (PoolInfo memory pool) {
@@ -102,12 +104,14 @@ contract MasterChef is IMasterChef, Ownable{
     }
 
     function deposit(address _lp, uint256 _amount, address to) external{
+        require(to != address(0), "deposit for address 0");
+
         PoolInfo memory pool = _updatePool(_lp);
         UserInfo memory usercache = userInfo[_lp][to];
 
         // Effects
         usercache.amount = usercache.amount.add(_amount);
-        usercache.rewardDebt = usercache.rewardDebt.add((_amount.mul(pool.accSushiPerShare) / ACC_SUSHI_PRECISION));
+        usercache.rewardDebt = usercache.rewardDebt.add(int256(_amount.mul(pool.accSushiPerShare) / ACC_SUSHI_PRECISION));
 
         // Interactions
         IRewarder _rewarder = pool.rewarder;
@@ -128,7 +132,7 @@ contract MasterChef is IMasterChef, Ownable{
         UserInfo memory userCache = userInfo[_lp][msg.sender];
 
         // Effects
-        userCache.rewardDebt = userCache.rewardDebt.sub(_amount.mul(pool.accSushiPerShare) / ACC_SUSHI_PRECISION);
+        userCache.rewardDebt = userCache.rewardDebt.sub(int256(_amount.mul(pool.accSushiPerShare) / ACC_SUSHI_PRECISION));
         userCache.amount = userCache.amount.sub(_amount);
 
         // Interactions
@@ -148,8 +152,8 @@ contract MasterChef is IMasterChef, Ownable{
     function harvest(address _lp, address to) external {
         PoolInfo memory pool = _updatePool(_lp);
         UserInfo memory userCache = userInfo[_lp][msg.sender];
-        uint256 accumulatedSushi = userCache.amount.mul(pool.accSushiPerShare) / ACC_SUSHI_PRECISION;
-        uint256 _pendingSushi = accumulatedSushi.sub(userCache.rewardDebt);
+        int256 accumulatedSushi = int256(userCache.amount.mul(pool.accSushiPerShare) / ACC_SUSHI_PRECISION);
+        uint256 _pendingSushi = accumulatedSushi.sub(userCache.rewardDebt).toUInt256();
 
         // Effects
         userCache.rewardDebt = accumulatedSushi;

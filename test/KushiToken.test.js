@@ -5,7 +5,14 @@ const {
     expectEvent,  // Assertions for emitted events
     expectRevert, // Assertions for transactions that should fail
   } = require('@openzeppelin/test-helpers');
+const Web3 = require('web3');
 const KushiToken = artifacts.require("./KushiToken.sol");
+
+var web3 = new Web3(Web3.givenProvider || 'http://127.0.0.1:7545');
+web3.eth.getAccounts();
+
+//const [owner, user1, user2, user3] = web3.eth.getAccounts();
+
 
 contract("Kushitoken", ([owner, user1, user2, user3]) => {
     const name = "Kushitoken";
@@ -14,6 +21,7 @@ contract("Kushitoken", ([owner, user1, user2, user3]) => {
 
     before(async () => {
         this.kushi = await KushiToken.new();
+        //console.log(this.kushi.address);
     });
 
     describe("datas", () => {
@@ -71,16 +79,12 @@ contract("Kushitoken", ([owner, user1, user2, user3]) => {
         });
 
         it("delegates", async () => {
-            const delegate = await this.kushi.delegates(user1);
-            expect(delegate.toString()).to.equal('100');
+            await this.kushi.delegate(user1, {from: user1});
+            await this.kushi.mint(user1, 0);
+            const vote = await this.kushi.getCurrentVotes(user1);
+            expect(vote.toString()).to.equal('100');
+            
         });
-
-        it("move delegate", async() => {
-            await this.kushi.delegate(user2, {from: user1});
-            const delegate = await this.kushi.delegates(user2);
-            expect(delegate.toString()).to.equal("100");
-        });
-
     });
 
 
