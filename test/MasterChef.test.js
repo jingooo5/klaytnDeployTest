@@ -35,7 +35,8 @@ contract("MasterChef", ([owner, user1, user2, user3])=>{
     before(async () => {
         this.kushi = await KushiToken.new();
         this.lp = await KIP7mock.new("lp", "LP", 18);
-        this.chef = await MasterChef.new(this.kushi.address, 1000, 155);
+        //kushi per block = 100, start from block 0
+        this.chef = await MasterChef.new(this.kushi.address, 100, 0);
         this.rewarder = await Rewarder.new(1, this.chef.address);
 
         await this.kushi.transferOwnership(this.chef.address);
@@ -75,11 +76,12 @@ contract("MasterChef", ([owner, user1, user2, user3])=>{
     });
 
     describe("add and set", () => {
-        it("add lp", async()=>{
+        it("add lp with alloc point 100", async()=>{
             const txReceipt = await this.chef.add(100, this.lp.address, this.rewarder.address);
 
             expectEvent(txReceipt, "LogPoolAddition");
 
+            // totalAlloc =100
             const totalAllocPoint = await this.chef.totalAllocPoint();
             expect(totalAllocPoint.toString()).to.equal('100');
 
@@ -106,23 +108,54 @@ contract("MasterChef", ([owner, user1, user2, user3])=>{
             expect((await this.lp.balanceOf(user3)).toString()).to.equal('500000');
         });
 
-        it("deposit 100000lp from user1", async () => {
-            await this.lp.approve(this.chef.address, 100000, {from: user1});
-            await this.chef.deposit(this.lp.address, 100000, user1, {from: user1});
+        it("deposit 100lp from user1", async () => {
+            await this.lp.approve(this.chef.address, 100, {from: user1});
+            await this.chef.deposit(this.lp.address, 100, user1, {from: user1});
 
             //expect((await this.chef.poolInfo(this.lp.address)).accSushiPerShare).to.gt(new BN(0));
-            expect((await this.lp.balanceOf(this.chef.address)).toString()).to.equal('100000');
+            expect((await this.lp.balanceOf(this.chef.address)).toString()).to.equal('100');
         });
 
-        it("deposit 400000lp from user1", async () => {
-            await this.lp.approve(this.chef.address, 400000, {from: user1});
-            await this.chef.deposit(this.lp.address, 400000, user1, {from: user1});
-            await mineBlock(1);
+        // it("deposit 400lp from user1", async () => {
+        //     await this.lp.approve(this.chef.address, 400, {from: user1});
+        //     await this.chef.deposit(this.lp.address, 400, user1, {from: user1});
+        //     await mineBlock(1);
 
-            //expect((await this.chef.poolInfo(this.lp.address)).accSushiPerShare).to.gt(new BN(0));
-            console.log(await this.chef.poolInfo(this.lp.address));
-            expect((await this.lp.balanceOf(this.chef.address)).toString()).to.equal('500000');
+        //     //expect((await this.chef.poolInfo(this.lp.address)).accSushiPerShare).to.gt(new BN(0));
+        //     console.log(await this.chef.poolInfo(this.lp.address));
+        //     expect((await this.lp.balanceOf(this.chef.address)).toString()).to.equal('500');
+        // });
+
+        it("withdraw 50lp from user1 after 10block", async() => {
+            await this.chef.withdraw(this.lp.address, 50, user1, {from: user1});
+
+            const lpamount = await this.lp.balanceOf(this.chef.address);
+            const poolInfo = await this.chef.poolInfo(this.lp.address);
+
+            console.log(lpamount.toString());
+            console.log(poolInfo.accSushiPerShare.toString());
         });
+
+        it("harvest from user1", async() => {
+            await this.chef.harvest(this.lp.address, user1, {from: user1});
+
+            const kushibalance = await this.kushi.balanceOf(user1);
+            //const lpamount = await this.lp.balanceOf(user1);
+            const rewardamount = await this.rewarder.balanceOf(user1);
+
+            console.log(kushibalance.toString());
+            console.log(rewardamount.toString());
+
+            const userInfo = await this.chef.userInfo(user1);
+            console.log(userInfo.rewardDebt.toString());
+
+        });
+
+        it("emergencyWithdraw", async() => {
+            await this.chef.emergencyWithdraw(this.lp.address, user1, {from: user1});
+            const lpamount = await this.lp.balanceOf(user1);
+
+        })
 
         it("pedingTokens", async() => {
             //await web3.eth.getBlockNumber(console.log);
@@ -131,7 +164,7 @@ contract("MasterChef", ([owner, user1, user2, user3])=>{
             const pending = await this.chef.pendingToken(this.lp.address, user1);
             console.log(pending.toString());
         })
-    })
+    });
 
 
 });

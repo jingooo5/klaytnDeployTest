@@ -96,6 +96,11 @@ contract MasterChef is IMasterChef, Ownable{
         }
     }
 
+    function updatePool(address _lp) external {
+        //require(poolInfo[_lp] != 0, "updating not existing pool");
+        _updatePool(_lp);
+    }
+
     function massUpdatePools(address[] memory lps) public {
         uint256 length = lps.length;
         for (uint256 pool = 0; pool < length; ++pool) {
