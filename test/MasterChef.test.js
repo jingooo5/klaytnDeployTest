@@ -5,12 +5,27 @@ const {
     expectEvent,  // Assertions for emitted events
     expectRevert, // Assertions for transactions that should fail
   } = require('@openzeppelin/test-helpers');
-
+const Web3 = require('web3');
+var web3 = new Web3(Web3.givenProvider || 'http://127.0.0.1:7545');
 
 const KushiToken = artifacts.require("./KushiToken.sol");
 const MasterChef = artifacts.require("./MasterChef.sol");
 const KIP7mock = artifacts.require("./mocks/KIP7mintable.sol");
 const Rewarder = artifacts.require("./mocks/RewarderMock.sol");
+
+async function mineBlock(times){
+    for(let i = 0; i < times; i++){
+        web3.currentProvider.send({
+            jsonrpc: "2.0",
+            method: "evm_mine",
+            params:[],
+            id: new Date().getTime(),
+        }, function(err) {
+            if(err)
+                console.log(err);
+      });
+    }
+}
 
 contract("MasterChef", ([owner, user1, user2, user3])=>{
     const name = "Kushitoken";
@@ -99,8 +114,22 @@ contract("MasterChef", ([owner, user1, user2, user3])=>{
             expect((await this.lp.balanceOf(this.chef.address)).toString()).to.equal('100000');
         });
 
+        it("deposit 400000lp from user1", async () => {
+            await this.lp.approve(this.chef.address, 400000, {from: user1});
+            await this.chef.deposit(this.lp.address, 400000, user1, {from: user1});
+            await mineBlock(1);
+
+            //expect((await this.chef.poolInfo(this.lp.address)).accSushiPerShare).to.gt(new BN(0));
+            console.log(await this.chef.poolInfo(this.lp.address));
+            expect((await this.lp.balanceOf(this.chef.address)).toString()).to.equal('500000');
+        });
+
         it("pedingTokens", async() => {
-            
+            //await web3.eth.getBlockNumber(console.log);
+            await mineBlock(5);
+            //await web3.eth.getBlockNumber(console.log);
+            const pending = await this.chef.pendingToken(this.lp.address, user1);
+            console.log(pending.toString());
         })
     })
 

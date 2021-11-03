@@ -9,7 +9,6 @@ const Web3 = require('web3');
 const KushiToken = artifacts.require("./KushiToken.sol");
 
 var web3 = new Web3(Web3.givenProvider || 'http://127.0.0.1:7545');
-web3.eth.getAccounts();
 
 //const [owner, user1, user2, user3] = web3.eth.getAccounts();
 
