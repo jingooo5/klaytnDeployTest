@@ -17,10 +17,17 @@ module.exports = {
   networks: {
     baobab: {
       url: "https://api.baobab.klaytn.net:8651",
+      // httpHeaders:
+      //   {
+      //     "Authorization":
+          
+      //       "Basic " +
+      //       Buffer.from(access_key_id + ":" + secret_access_key).toString(
+      //         "base64"
+      //       ),
+      //       "x-chain-id": "1001"
+      //   },
       accounts: [privateKey],
-      chainId: 1001,
-      gas: 8500000,
-      gasPrice: 2500000000,
-    }
+         }
   }
 }
