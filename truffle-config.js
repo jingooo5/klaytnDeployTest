@@ -19,12 +19,17 @@
  */
  const klaytnHDWalletProvider = require("truffle-hdwallet-provider-klaytn");
  const HDWalletProvider = require("truffle-hdwallet-provider");
- const Caver = require('caver-js')
+ const Caver = require('caver-js');
+ require("dotenv").config();
  
  const privateKey = process.env.PRIVATEKEY;
  const accessKeyId = process.env.ACCESSKEYID;
  const secretAccessKey = process.env.SECRETACCESSKEY;
  
+
+ console.log(privateKey);
+ console.log(accessKeyId);
+ console.log(secretAccessKey);
  // const accessKeyId = JSON.parse(fs.readFileSync("./kas-access-keys.json")).accessKeyId;
  // const secretAccessKey = JSON.parse(fs.readFileSync("./kas-access-keys.json")).secretAccessKey;
 
@@ -89,13 +94,13 @@ module.exports = {
       skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
     },
 
-    Baobab : {
-      url : "https://api.baobab.klaytn.net",
-      port : "8651",
-      network_id: '1001', //Klaytn baobab testnet's network id
-      gas: '8500000',
-      gasPrice:'25000000000'
-    },
+    // Baobab : {
+    //   url : "https://api.baobab.klaytn.net",
+    //   port : "8651",
+    //   network_id: '1001', //Klaytn baobab testnet's network id
+    //   gas: '8500000',
+    //   gasPrice:'25000000000'
+    // },
 
     kasBaobab: {
       provider: () => {

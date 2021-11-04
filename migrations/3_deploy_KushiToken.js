@@ -3,7 +3,8 @@ const MasterChef = artifacts.require("./MasterChef.sol");
 
 module.exports = async function(deployer) {
     await deployer.deploy(KushiToken);
-    const kushitoken = await KushiToken.deployed;
+    const kushitoken = await KushiToken.deployed();
 
-    await deployer.deploy(MasterChef, "100", "0");
+    //console.log(kushitoken.address);
+    await deployer.deploy(MasterChef, kushitoken.address, "100", "0");
 };

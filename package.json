@@ -22,7 +22,10 @@
   "devDependencies": {
     "@openzeppelin/test-helpers": "^0.5.15",
     "bn.js": "^5.2.0",
+    "caver-js": "^1.6.4",
     "chai": "^4.3.4",
+    "dotenv": "^10.0.0",
+    "truffle-hdwallet-provider": "^1.0.17",
     "truffle-hdwallet-provider-klaytn": "^1.4.1",
     "web3": "^1.6.0"
   }
