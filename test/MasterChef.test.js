@@ -111,7 +111,7 @@ contract("MasterChef", ([owner, user1, user2, user3])=>{
         });
 
         it("deposit and check reward", async() => {
-            console.log("cur block", await web3.eth.getBlockNumber());
+            console.log("cur block", await web3.eth.getBlockNumber());  
             
             //approve lp from user1 to chef
             await this.lp.approve(this.chef.address, 100, {from: user1});

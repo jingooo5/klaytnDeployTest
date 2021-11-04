@@ -90,7 +90,8 @@ module.exports = {
     },
 
     Baobab : {
-      privider : () => new klaytnHDWalletProvider(privateKey, new Caver.providers.HttpProvider(privateKey, "https://api.baobab.klaytn.net:8651")),
+      url : "https://api.baobab.klaytn.net",
+      port : "8651",
       network_id: '1001', //Klaytn baobab testnet's network id
       gas: '8500000',
       gasPrice:'25000000000'
@@ -105,7 +106,7 @@ module.exports = {
           ],
           keepAlive: false,
         }
-        return new HDWalletProvider(privateKey, new Caver.providers.HttpProvider("https://node-api.klaytnapi.com/v1/klaytn", option))
+        return new klaytnHDWalletProvider(privateKey, new Caver.providers.HttpProvider("https://node-api.klaytnapi.com/v1/klaytn", option))
       },
       network_id: '1001', //Klaytn baobab testnet's network id
       gas: '8500000',
