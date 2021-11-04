@@ -177,6 +177,33 @@ contract MasterChef is IMasterChef, Ownable{
         emit Harvest(msg.sender, _lp, _pendingSushi);
     }
 
+    function withdrawAndHarvest(address lp, uint256 amount, address to) external {
+        PoolInfo memory pool = _updatePool(lp);
+        UserInfo memory usercache = userInfo[lp][msg.sender];
+        int256 accumulatedSushi = int256(usercache.amount.mul(pool.accSushiPerShare) / ACC_SUSHI_PRECISION);
+        uint256 _pendingSushi = accumulatedSushi.sub(usercache.rewardDebt).toUInt256();
+
+        // Effects
+        usercache.rewardDebt = accumulatedSushi.sub(int256(amount.mul(pool.accSushiPerShare) / ACC_SUSHI_PRECISION));
+        usercache.amount = usercache.amount.sub(amount);
+        
+        // Interactions
+        if (_pendingSushi != 0) {
+            kushi.mint(to, _pendingSushi);
+        }
+
+        IRewarder _rewarder = pool.rewarder;
+        if (address(_rewarder) != address(0)) {
+            _rewarder.onSushiReward(lp, msg.sender, to, _pendingSushi, usercache.amount);
+        }
+
+        pool.lpToken.safeTransfer(to, amount);
+        userInfo[lp][msg.sender] = usercache;
+
+        emit Withdraw(msg.sender, lp, amount, to);
+        emit Harvest(msg.sender, lp, _pendingSushi);
+    }
+
     /// @notice Withdraw without caring about rewards. EMERGENCY ONLY.
     /// @param to Receiver of the LP tokens.
     function emergencyWithdraw(address _lp, address to) external {

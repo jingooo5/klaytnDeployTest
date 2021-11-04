@@ -20,7 +20,8 @@
  const klaytnHDWalletProvider = require("truffle-hdwallet-provider-klaytn");
  const HDWalletProvider = require("truffle-hdwallet-provider");
  const Caver = require('caver-js')
- 
+ require("dotenv").config();
+
  const privateKey = process.env.PRIVATEKEY;
  const accessKeyId = process.env.ACCESSKEYID;
  const secretAccessKey = process.env.SECRETACCESSKEY;
