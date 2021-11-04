@@ -19,13 +19,14 @@
  */
 const klaytnHDWalletProvider = require("truffle-hdwallet-provider-klaytn");
 const HDWalletProvider = require("truffle-hdwallet-provider");
-const fs = require('fs');
-const path = require("path");
 const Caver = require('caver-js')
 
-const privateKey = fs.readFileSync("./.secret").toString();
-const accessKeyId = JSON.parse(fs.readFileSync("./kas-access-keys.json")).accessKeyId;
-const secretAccessKey = JSON.parse(fs.readFileSync("./kas-access-keys.json")).secretAccessKey;
+const privateKey = process.env.PRIVATEKEY;
+const accessKeyId = process.env.ACCESSKEYID;
+const secretAccessKey = process.env.SECRETACCESSKEY;
+
+// const accessKeyId = JSON.parse(fs.readFileSync("./kas-access-keys.json")).accessKeyId;
+// const secretAccessKey = JSON.parse(fs.readFileSync("./kas-access-keys.json")).secretAccessKey;
 
 // const HDWalletProvider = require('@truffle/hdwallet-provider');
 // const infuraKey = "fj4jll3k.....";
@@ -79,7 +80,7 @@ module.exports = {
     // Useful for deploying to a public network.
     // NB: It's important to wrap the provider as a function.
     ropsten: {
-      provider: () => new HDWalletProvider(mnemonic, `https://ropsten.infura.io/v3/28d1cda192db45a790bb2faaff3aa13f`),
+      provider: () => new HDWalletProvider(process.env.mnemonic, `https://ropsten.infura.io/v3/${process.env.INFURA_KEY}`),
       network_id: 3,       // Ropsten's id
       gas: 5500000,        // Ropsten has a lower block limit than mainnet
       confirmations: 2,    // # of confs to wait between deployments. (default: 0)

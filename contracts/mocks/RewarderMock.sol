@@ -22,7 +22,7 @@ contract RewarderMock is KIP7, IRewarder {
     }
 
     function onSushiReward (address, address, address to, uint256 sushiAmount, uint256) onlyMCV2 external {
-        uint256 pendingReward = sushiAmount.mul(rewardMultiplier) / REWARD_TOKEN_DIVISOR;
+        uint256 pendingReward = sushiAmount.mul(rewardMultiplier);
         //uint256 rewardBal = rewardToken.balanceOf(address(this));
         _mint(to, pendingReward);
     }
@@ -31,7 +31,7 @@ contract RewarderMock is KIP7, IRewarder {
         IKIP7[] memory _rewardTokens = new IKIP7[](1);
         _rewardTokens[0] = (this);
         uint256[] memory _rewardAmounts = new uint256[](1);
-        _rewardAmounts[0] = sushiAmount.mul(rewardMultiplier) / REWARD_TOKEN_DIVISOR;
+        _rewardAmounts[0] = sushiAmount.mul(rewardMultiplier);
         return (_rewardTokens, _rewardAmounts);
     }
 
