@@ -17,10 +17,11 @@
  * phrase from a file you've .gitignored so it doesn't accidentally become public.
  *
  */
- const HDWalletProvider = require("truffle-hdwallet-provider-klaytn");
- const fs = require('fs');
- const path = require("path");
- const Caver = require('caver-js')
+const klaytnHDWalletProvider = require("truffle-hdwallet-provider-klaytn");
+const HDWalletProvider = require("truffle-hdwallet-provider");
+const fs = require('fs');
+const path = require("path");
+const Caver = require('caver-js')
 
 const privateKey = fs.readFileSync("./.secret").toString();
 const accessKeyId = JSON.parse(fs.readFileSync("./kas-access-keys.json")).accessKeyId;
@@ -60,7 +61,7 @@ module.exports = {
     development: {
       host: "127.0.0.1",     // Localhost (default: none)
       port: 8545,            // Standard Ethereum port (default: none)
-      network_id: "*",       // Any network (default: none)
+      network_id: "*",      // Any network (default: none)
       gas: 0x6691b7,
       gasPrice:20000000000
     },
@@ -77,14 +78,14 @@ module.exports = {
 
     // Useful for deploying to a public network.
     // NB: It's important to wrap the provider as a function.
-    // ropsten: {
-      // provider: () => new HDWalletProvider(mnemonic, `https://ropsten.infura.io/v3/YOUR-PROJECT-ID`),
-      // network_id: 3,       // Ropsten's id
-      // gas: 5500000,        // Ropsten has a lower block limit than mainnet
-      // confirmations: 2,    // # of confs to wait between deployments. (default: 0)
-      // timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
-      // skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
-    // },
+    ropsten: {
+      provider: () => new HDWalletProvider(mnemonic, `https://ropsten.infura.io/v3/28d1cda192db45a790bb2faaff3aa13f`),
+      network_id: 3,       // Ropsten's id
+      gas: 5500000,        // Ropsten has a lower block limit than mainnet
+      confirmations: 2,    // # of confs to wait between deployments. (default: 0)
+      timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
+      skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
+    },
     kasBaobab: {
       provider: () => {
         const option = {
@@ -94,14 +95,13 @@ module.exports = {
           ],
           keepAlive: false,
         }
-        return new HDWalletProvider(privateKey, new Caver.providers.HttpProvider("https://node-api.klaytnapi.com/v1/klaytn", option))
+        return new klaytnHDWalletProvider(privateKey, new Caver.providers.HttpProvider("https://node-api.klaytnapi.com/v1/klaytn", option))
       },
       network_id: '1001', //Klaytn baobab testnet's network id
       gas: '8500000',
       gasPrice:'25000000000'
     },
   },
-
   // Set default mocha options here, use special reporters etc.
   mocha: {
     // timeout: 100000
