@@ -2,3 +2,4 @@ node_modules
 kas-access-keys.json
 build
 .secret
+.env
