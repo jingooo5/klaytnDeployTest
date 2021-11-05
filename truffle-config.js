@@ -17,7 +17,7 @@
  * phrase from a file you've .gitignored so it doesn't accidentally become public.
  *
  */
-<<<<<<< HEAD
+
  const klaytnHDWalletProvider = require("truffle-hdwallet-provider-klaytn");
  const HDWalletProvider = require("truffle-hdwallet-provider");
  const Caver = require('caver-js');
@@ -26,25 +26,9 @@
  const privateKey = process.env.PRIVATEKEY;
  const accessKeyId = process.env.ACCESSKEYID;
  const secretAccessKey = process.env.SECRETACCESSKEY;
- 
 
- console.log(privateKey);
- console.log(accessKeyId);
- console.log(secretAccessKey);
  // const accessKeyId = JSON.parse(fs.readFileSync("./kas-access-keys.json")).accessKeyId;
  // const secretAccessKey = JSON.parse(fs.readFileSync("./kas-access-keys.json")).secretAccessKey;
-=======
-const klaytnHDWalletProvider = require("truffle-hdwallet-provider-klaytn");
-const HDWalletProvider = require("truffle-hdwallet-provider");
-const Caver = require('caver-js')
-
-const privateKey = process.env.PRIVATEKEY;
-const accessKeyId = process.env.ACCESSKEYID;
-const secretAccessKey = process.env.SECRETACCESSKEY;
-
-// const accessKeyId = JSON.parse(fs.readFileSync("./kas-access-keys.json")).accessKeyId;
-// const secretAccessKey = JSON.parse(fs.readFileSync("./kas-access-keys.json")).secretAccessKey;
->>>>>>> e4ac4c6a609e969c35e12fab657f364a8be8eb53
 
 // const HDWalletProvider = require('@truffle/hdwallet-provider');
 // const infuraKey = "fj4jll3k.....";
