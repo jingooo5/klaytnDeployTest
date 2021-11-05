@@ -144,7 +144,7 @@ contract MasterChef is IMasterChef, Ownable{
         IRewarder _rewarder = pool.rewarder;
         if (address(_rewarder) != address(0)) {
             _rewarder.onSushiReward(_lp, msg.sender, to, 0, userCache.amount);
-        }∆
+        }
         
         pool.lpToken.safeTransfer(to, _amount);
         userInfo[_lp][msg.sender] = userCache;

@@ -112,10 +112,10 @@ contract KushiToken is KIP7("Kushitoken", "KUSHI", 18), Ownable {
             )
         );
 
-        address signatory = ecrecover(digest, v, r, s);
+        address signatory = ecrecover(digest,v, r, s);
         require(signatory != address(0), "SUSHI::delegateBySig: invalid signature");
         require(nonce == nonces[signatory]++, "SUSHI::delegateBySig: invalid nonce");
-        require(now <= expiry, "SUSHI::delegateBySig: signature expired");
+        //require(block.timestamp <= expiry, "SUSHI::delegateBySig: signature expired");
         return _delegate(signatory, delegatee);
     }
 
@@ -236,6 +236,6 @@ contract KushiToken is KIP7("Kushitoken", "KUSHI", 18), Ownable {
     }
 
     function getChainId() internal pure returns (uint) {
-        return 1001;
+        return 5777;
     }
 }
