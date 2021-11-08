@@ -10,7 +10,7 @@ import "./libraries/SignedSafeMath.sol";
 
 contract MasterChef is IMasterChef, Ownable{
     using SafeMath for uint256;
-    using SafeERC20 for IKIP7;
+    //using SafeERC20 for IKIP7;
     using SignedSafeMath for int256;
 
     KushiToken public kushi;
@@ -57,6 +57,7 @@ contract MasterChef is IMasterChef, Ownable{
     //using cache
     function set(address _lp, uint256 _allocPoint, IRewarder _rewarder, bool overwrite) external onlyOwner{
         PoolInfo memory pool = poolInfo[_lp];
+        require(address(pool.lpToken) != address(0), "pool is not initiated");
         totalAllocPoint = totalAllocPoint.sub(pool.allocPoint).add(_allocPoint);
 
         pool.allocPoint = _allocPoint;

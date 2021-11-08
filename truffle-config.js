@@ -91,14 +91,6 @@ module.exports = {
       skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
     },
 
-    // Baobab : {
-    //   url : "https://api.baobab.klaytn.net",
-    //   port : "8651",
-    //   network_id: '1001', //Klaytn baobab testnet's network id
-    //   gas: '8500000',
-    //   gasPrice:'25000000000'
-    // },
-
     kasBaobab: {
       provider: () => {
         const option = {

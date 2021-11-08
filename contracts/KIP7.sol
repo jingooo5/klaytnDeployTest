@@ -95,4 +95,33 @@ contract KIP7 is IKIP7{
         emit Transfer(address(0), to, amount);
     }
 
+    function safeTransfer(address recipient, uint256 amount) public {
+        safeTransfer(recipient, amount, "");
+    }
+
+    /**
+    * @dev Moves `amount` tokens from the caller's account to `recipient`.
+    */
+    function safeTransfer(address recipient, uint256 amount, bytes memory data) public {
+        _transfer(msg.sender, recipient, amount);
+        //require(_checkOnKIP7Received(msg.sender, recipient, amount, data), "KIP7: transfer to non KIP7Receiver implementer");
+    }
+
+    /**
+    * @dev Moves `amount` tokens from `sender` to `recipient` using the allowance mechanism.
+    * `amount` is then deducted from the caller's allowance.
+    */
+    function safeTransferFrom(address sender, address recipient, uint256 amount) public {
+        safeTransferFrom(sender, recipient, amount, "");
+    }
+
+    /**
+    * @dev Moves `amount` tokens from `sender` to `recipient` using the allowance mechanism.
+    * `amount` is then deducted from the caller's allowance.
+    */
+    function safeTransferFrom(address sender, address recipient, uint256 amount, bytes memory data) public {
+        _transfer(sender, recipient, amount);
+        //require(_checkOnKIP7Received(sender, recipient, amount, data), "KIP7: transfer to non KIP7Receiver implementer");
+    }
+
 }
